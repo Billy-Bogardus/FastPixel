@@ -4,50 +4,82 @@ import time
 import board
 import neopixel
 import digitalio
-
+print("Hello World!!")
 #Config Neopixel String
-pixel1 = neopixel.NeoPixel(board.D1, 60,pixel_order=neopixel.RGBW)
-pixel2 = neopixel.NeoPixel(board.D2, 60,pixel_order=neopixel.RGBW)
-pixel3 = neopixel.NeoPixel(board.D3, 60,pixel_order=neopixel.RGBW)
-pixel4 = neopixel.NeoPixel(board.D4, 60,pixel_order=neopixel.RGBW)
-pixel5 = neopixel.NeoPixel(board.D0, 60,pixel_order=neopixel.RGBW)
-pixel1.brightness = 0.1# 0.3
-pixel2.brightness = 0.1# 0.3
-pixel3.brightness = 0.1# 0.3
-pixel4.brightness = 0.1# 0.3
-pixel5.brightness = 0.1# 0.3
+class Fast_PX_Config():
+    def __init__(self, preConfig=True, autoWrite=True):
+        self.defaultBrightness = 0.1
+        self.preConfig = preConfig
+        if(self.preConfig):
+            #Config all pins as Neopixel
+            self.Strings = {
+                0: {
+                    "pin": board.D0, "n": 60, "bpp": 4, 
+                    "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                    "brightness": self.defaultBrightness
+                },
+                1: {
+                    "pin": board.D1, "n": 60, "bpp": 4, 
+                    "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                    "brightness": self.defaultBrightness
+                },
+                2: {
+                    "pin": board.D2, "n": 60, "bpp": 4, 
+                    "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                    "brightness": self.defaultBrightness
+                },
+                3: {
+                    "pin": board.D3, "n": 60, "bpp": 4, 
+                    "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                    "brightness": self.defaultBrightness
+                },
+                4: {
+                    "pin": board.D4, "n": 60, "bpp": 4, 
+                    "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                    "brightness": self.defaultBrightness}
+                # },
+                # 5: {
+                #     "pin": board.D5, "n": 60, "bpp": 4, 
+                #     "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                #     "brightness": self.defaultBrightness
+                # },
+                # 6: {
+                #     "pin": board.D6, "n": 60, "bpp": 4, 
+                #     "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                #     "brightness": self.defaultBrightness
+                # },
+                # 7: {
+                #     "pin": board.D7, "n": 60, "bpp": 4, 
+                #     "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                #     "brightness": self.defaultBrightness
+                # },
+                # 8: {
+                #     "pin": board.D8, "n": 60, "bpp": 4, 
+                #     "auto_write": autoWrite, "pixel_order": neopixel.GRBW,
+                #     "brightness": self.defaultBrightness
+                # }
+            }
+cfg = Fast_PX_Config(preConfig=True,autoWrite=False)
+pxls = []
+for index, s in cfg.Strings.items():
+    pxls.append(neopixel.NeoPixel(
+        s["pin"], s["n"], bpp = s["bpp"], 
+        brightness = s["brightness"], 
+        auto_write = s["auto_write"], 
+        pixel_order = s["pixel_order"]
+        ) 
+    )
+
+Colors = [(255,255,255,255), (255,0,0,0),(0,255,0,0),(0,0,255,0),(0,0,0,255)]
 
 #Confit Boot Button
 #button = digitalio.DigitalInOut(board.BUTTON)
-
+i = 0
 while True:
-    pixel1.fill((255, 255, 255, 255))
-    pixel2.fill((255, 255, 255, 255))
-    pixel3.fill((255, 255, 255, 255))
-    pixel4.fill((255, 255, 255, 255))
-    pixel5.fill((255, 255, 255, 255))
+    for p in pxls:
+        p.fill(Colors[i])
+        p.show()
     time.sleep(1)
-    pixel1.fill((255, 0, 0,0))
-    pixel2.fill((255, 0, 0,0))
-    pixel3.fill((255, 0, 0,0))
-    pixel4.fill((255, 0, 0,0))
-    pixel5.fill((255, 0, 0,0))
-    time.sleep(1)
-    pixel1.fill((0, 255, 0,0))
-    pixel2.fill((0, 255, 0,0))
-    pixel3.fill((0, 255, 0,0))
-    pixel4.fill((0, 255, 0,0))
-    pixel5.fill((0, 255, 0,0))
-    time.sleep(1)
-    pixel1.fill((0, 0, 255, 0))
-    pixel2.fill((0, 0, 255, 0))
-    pixel3.fill((0, 0, 255, 0))
-    pixel4.fill((0, 0, 255, 0))
-    pixel5.fill((0, 0, 255, 0))
-    time.sleep(1)
-    pixel1.fill((0, 0, 0, 255))
-    pixel2.fill((0, 0, 0, 255))
-    pixel3.fill((0, 0, 0, 255))
-    pixel4.fill((0, 0, 0, 255))
-    pixel5.fill((0, 0, 0, 255))
-    time.sleep(1)
+    i+=1
+    if i > len(Colors) -1:
+        i = 0
