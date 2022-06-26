@@ -1,9 +1,16 @@
 
 #June 6, 2022 Ann Franks murder was 78 years ago https://www.youtube.com/watch?v=vBKK3yxk5jY&feature=youtu.be
+
 import time
 import board
 import neopixel
 import digitalio
+#from i2cperipheral import I2CPeripheral
+
+
+#s = I2C(scl=board.SCL, sda=board.SDA,frequency=10000,timeout=10)
+
+
 
 from rainbowio import colorwheel
 
@@ -107,8 +114,8 @@ while True:
     else:
         b-=0.01
     for p in pxls:
-        p[0:num_pixels] = Colors
-        p.brightness = b
+        p[0:num_pixels] = Colors # Strobe
+        p.brightness = b # Fade
         p.show()
     if b >= 1.0:
         a = 0
